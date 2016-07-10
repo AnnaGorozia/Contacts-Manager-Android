@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Contacts</string>
+    <string name="send_mes">SMS</string>
+    <string name="call">Call</string>
+    <string name="search_for_contact">Search for contact</string>
+    <string name="mails">Mails</string>
+    <string name="phone_numbers">Phone Numbers</string>
+    <string name="enter_new_number">Enter new number</string>
+    <string name="enter_new_mail">Enter new mail</string>
+    <string name="contact_name">Contact name</string>
+</resources>
