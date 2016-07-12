@@ -71,6 +71,19 @@ public class PhoneNumberAdapter extends ArrayAdapter<Mobile> {
             }
         });
 
+//        call.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(phone));
+//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                    context.startActivity(intent);
+//                    return;
+//                }
+//                context.startActivity(intent);
+//
+//            }
+//        });
+
         if (editable) {
             sms.setVisibility(View.INVISIBLE);
         }

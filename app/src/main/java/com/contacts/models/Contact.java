@@ -7,15 +7,28 @@ import java.util.List;
 public class Contact extends SugarRecord{
 
     String name;
+    String uri;
 
     public Contact() {
 
+    }
+
+    public Contact(String name, String uri) {
+        this.name = name;
+        this.uri = uri;
     }
 
     public Contact(String name) {
         this.name = name;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
     public List<Mobile> getMobiles() {
         return Mobile.find(Mobile.class, "contact = ?", "" + getId());

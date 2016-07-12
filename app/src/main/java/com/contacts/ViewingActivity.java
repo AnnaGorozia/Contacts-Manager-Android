@@ -1,6 +1,8 @@
 package com.contacts;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +17,8 @@ import com.contacts.models.Contact;
 import com.contacts.models.Mail;
 import com.contacts.models.Mobile;
 import com.contacts.utils.Utility;
-import com.klinker.android.sliding.SlidingActivity;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -24,15 +26,18 @@ import java.util.ArrayList;
 public class ViewingActivity extends AppCompatActivity {
 
     private Contact user;
-    TextView contactName;
+    private TextView contactName;
 
-    ListView phonesView;
-    ArrayList<Mobile> phoneNumbers;
-    PhoneNumberAdapter phoneNumberAdapter;
+    private ImageView contactImage;
+    private ListView phonesView;
+    private ArrayList<Mobile> phoneNumbers;
+    private PhoneNumberAdapter phoneNumberAdapter;
 
-    ArrayList<Mail> mails;
-    ListView mailsView;
-    MailAdapter mailAdapter;
+    private ArrayList<Mail> mails;
+    private ListView mailsView;
+    private MailAdapter mailAdapter;
+
+    private static Bitmap contactPhoto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,9 +50,18 @@ public class ViewingActivity extends AppCompatActivity {
             user = Contact.findById(Contact.class, userId);
         }
 
-        ImageView contactImage = (ImageView) findViewById(R.id.contact_image);
+        contactImage = (ImageView) findViewById(R.id.contact_image);
         if (contactImage != null) {
-            contactImage.setImageResource(R.mipmap.ic_launcher);
+            if (user.getUri() != null) {
+                try {
+                    contactPhoto = Utility.decodeUri(Uri.parse(user.getUri()), getContentResolver(), 140);
+                    contactImage.setImageBitmap(contactPhoto);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                contactImage.setImageResource(R.mipmap.ic_launcher);
+            }
         }
         if (user != null) {
             setTitle("");
@@ -95,8 +109,18 @@ public class ViewingActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             user = Contact.findById(Contact.class, getIntent().getLongExtra("userID", -1L));
             contactName.setText(user.getName());
+            setImage();
+
             refreshPhonesList();
             refreshMailList();
+        }
+    }
+
+    private void setImage() {
+        if (user.getUri() != null) {
+            contactImage.setImageBitmap(getContactPhoto());
+        } else {
+            contactImage.setImageResource(R.mipmap.ic_launcher);
         }
     }
 
@@ -132,6 +156,12 @@ public class ViewingActivity extends AppCompatActivity {
         }
     }
 
+    public static Bitmap getContactPhoto() {
+        return contactPhoto;
+    }
 
+    public static void setContactPhoto(Bitmap contactPhoto) {
+        ViewingActivity.contactPhoto = contactPhoto;
+    }
 
 }

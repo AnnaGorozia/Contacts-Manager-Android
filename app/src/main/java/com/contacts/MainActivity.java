@@ -1,6 +1,8 @@
 package com.contacts;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,36 +17,32 @@ import com.contacts.adapters.UserListAdapter;
 import com.contacts.models.Contact;
 import com.contacts.models.Mail;
 import com.contacts.models.Mobile;
+import com.contacts.utils.Utility;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
 
+    private static Context context;
     private ListView list;
     private UserListAdapter adapter;
     private ArrayList<Contact> userList;
     private EditText etSearch;
     private List<Contact> allContacts;
 
+    public static Context getContext() {
+        return context;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Contact contact = new Contact("Anano Bodokia");
-//        contact.save();
-//        Mail mail = new Mail(contact, "anano.bodokia@mail.com");
-//        mail.save();
-//        Mail mail1 = new Mail(contact, "abodo12@freeuni.edu.ge");
-//        mail1.save();
-//        Mobile mobile = new Mobile(contact, "599403211");
-//        mobile.save();
-
-
-
-
+        context = this.getApplicationContext();
         userList = new ArrayList<Contact>();
         list = (ListView) findViewById(R.id.listView);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,4 +135,5 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         refreshUserList();
     }
+
 }
